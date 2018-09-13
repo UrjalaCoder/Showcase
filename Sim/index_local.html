@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            border: 2px solid blue;
+        }
+
+        </style>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="wrapper">
+            <canvas id="target" width="1280" height="720">
+            </canvas>
+            <p id="fps_counter"></p>
+        </div>
+
+        <script>// console.log("Starting...");
+        const PARTICLE_COUNT = 100;
+        const PARTICLE_RADIUS = 2;
+        const SPEED = 1;
+        const BOUNCE = 0;
+        const BOUNCE_WALL = 1;
+        const PARTICLE_MASS = 1;
+        const GRAVITATIONAL_CONSTANT = Math.pow(10, 2);
+        const MAX_VELOCITY = 20;
+        const CONSTANT_FORCE = {'x': 0, 'y': 0};
+
+        const WIDTH = 1280;
+        const HEIGHT = 720;
+
+
+
+        class Particle {
+            constructor(startPosition, startVelocity) {
+                // console.log("Creating Entity");
+
+                this.position = {
+                    'x': startPosition.x,
+                    'y': startPosition.y
+                };
+
+                this.velocity = {
+                    'x': startVelocity.x,
+                    'y': startVelocity.y
+                };
+
+                this.acceleration = {
+                    'x': 0,
+                    'y': 0
+                }
+
+                // Flag to set when checking collisions -->
+                this.collided = false;
+            }
+
+            checkCollision()  {
+                if(this.position.x + PARTICLE_RADIUS > WIDTH || 0 > this.position.x - PARTICLE_RADIUS) {
+                    // console.log("OUT of bounds!");
+                    this.velocity.x *= -1 * BOUNCE_WALL;
+
+                    if(this.position.x + PARTICLE_RADIUS > WIDTH) {
+                        this.position.x = WIDTH - PARTICLE_RADIUS - 1;
+                    } else {
+                        this.position.x = PARTICLE_RADIUS + 1;
+                    }
+                    // this.acceleration.y *= -1 * BOUNCE;
+                }
+
+                if(this.position.y + PARTICLE_RADIUS> HEIGHT || 0 > this.position.y - PARTICLE_RADIUS) {
+                    this.velocity.y *= -1 * BOUNCE_WALL;
+
+                    if(this.position.y + PARTICLE_RADIUS > HEIGHT) {
+                        this.position.y = HEIGHT - PARTICLE_RADIUS - 1;
+                    } else {
+                        this.position.y = PARTICLE_RADIUS + 1;
+                    }
+
+                    // this.acceleration.y *= -1 * BOUNCE;
+                }
+
+            }
+
+            applyForce(force) {
+                this.acceleration.x = force.x / PARTICLE_MASS;
+                this.acceleration.y = force.y / PARTICLE_MASS;
+            }
+
+            applyAcceleration() {
+                this.velocity.x += this.acceleration.x;
+                this.velocity.y += this.acceleration.y;
+
+                this.velocity.x = Math.min(this.velocity.x, MAX_VELOCITY);
+                this.velocity.y = Math.min(this.velocity.y, MAX_VELOCITY);
+
+            }
+
+            move() {
+                // console.log("X: " + this.position.x);
+                // console.log("Y: " + this.position.y);
+                this.applyAcceleration();
+                this.checkCollision();
+                this.position.x = this.position.x + this.velocity.x * SPEED;
+                this.position.y = this.position.y + this.velocity.y * SPEED;
+            }
+
+            reverseVelocity() {
+                // console.log("REVERSE!");
+                // console.log("VX: " + this.velocity.x);
+                // console.log(this.velocity.x);
+                let temp = this.velocity.x;
+                let tempY = this.velocity.y;
+                this.velocity.x = getRandomFloat(-temp, temp) * BOUNCE;
+                this.velocity.y = getRandomFloat(-tempY, tempY) * BOUNCE;
+                // console.log(this.velocity.x);
+            }
+
+            collision(otherParticle) {
+                let tX = this.velocity.x;
+                let tY = this.velocity.y;
+
+                let oX = otherParticle.velocity.x;
+                let oY = otherParticle.velocity.y;
+
+                let averageX = (tX + oX) / 2;
+                let averageY = (tY + oY) / 2;
+
+                this.velocity.y = Math.min(averageY * BOUNCE, MAX_VELOCITY);
+                this.velocity.x = Math.min(averageX * BOUNCE, MAX_VELOCITY);
+
+                otherParticle.velocity.x = Math.min(averageX * BOUNCE, MAX_VELOCITY);
+                otherParticle.velocity.y = Math.min(averageY * BOUNCE, MAX_VELOCITY);
+            }
+        }
+
+        function getRandomFloat(a, b) {
+            return Math.random() * (b - a) + a;
+        }
+
+        var particles = [];
+        for(let i = 0; i < PARTICLE_COUNT; i++) {
+            // console.log(getRandomFloat(10, 12));
+            particles.push(new Particle({
+                'x': Math.round(getRandomFloat(0, WIDTH - 1)),
+                'y': Math.round(getRandomFloat(0, HEIGHT - 1))
+            }, {
+                'x': getRandomFloat(-1, 1),
+                'y': getRandomFloat(-1, 1)
+            }));
+        }
+
+        var counterText = document.getElementById('fps_counter');
+
+        function applyGravity(particles) {
+            for(let i = 0; i < particles.length; i++) {
+                var forceSumX = 0;
+                var forceSumY = 0;
+
+                for(let j = 0; j < particles.length; j++) {
+                    if(j == i)
+                        continue;
+                    let self = particles[i];
+                    let other = particles[j];
+
+                    let distanceX = other.position.x - self.position.x;
+                    let distanceY = other.position.y - self.position.y;
+
+                    let totalDistance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+
+                    if(totalDistance < 2 * PARTICLE_RADIUS) {
+                        forceSumX += 0;
+                        forceSumY += 0;
+                        continue;
+                    }
+
+                    let forceX, forceY = 0;
+                    // console.log(distanceX);
+                    let totalForce = GRAVITATIONAL_CONSTANT * Math.pow(PARTICLE_MASS, 2) / Math.pow(totalDistance, 2);
+                    let angle = Math.atan(Math.abs(distanceY) / Math.abs(distanceX));
+                    // console.log(totalForce);
+                    // console.log(angle);
+                    forceX = Math.cos(angle) * totalForce;
+                    forceY = Math.sin(angle) * totalForce;
+
+                    // console.log(forceX);
+
+                    if(distanceX < 0) {
+                        forceX *= -1;
+                    }
+
+                    if(distanceY < 0) {
+                        forceY *= -1;
+                    }
+
+                    // console.log(forceX);
+
+                    forceSumX += forceX;
+                    forceSumY += forceY;
+                }
+
+                // CONSTANT_FORCE -->
+                forceSumX += CONSTANT_FORCE.x;
+                forceSumY += CONSTANT_FORCE.y;
+
+                particles[i].applyForce({'x': forceSumX, 'y': forceSumY});
+            }
+        }
+
+        function checkParticleCollisions(particles) {
+
+            for(let i in particles) {
+                // console.log(particles[i].velocity.x + particles[i].velocity.y);
+                // if(particles[i].collided) {
+                //     continue;
+                // }
+
+                let x = particles[i].position.x;
+                let y = particles[i].position.y;
+
+                for(let other in particles) {
+                    if(i === other) {
+                        continue;
+                    }
+
+                    let distance;
+                    let otherX = particles[other].position.x;
+                    let otherY = particles[other].position.y;
+
+                    let deltaX = Math.pow(x - otherX, 2);
+                    let deltaY = Math.pow(y - otherY, 2);
+
+                    distance = Math.sqrt(deltaX + deltaY);
+
+                    if(distance < 2 * PARTICLE_RADIUS) {
+                        particles[i].collision(particles[other]);
+                        particles[i].collided = true;
+                        // console.log("DEBUG!");
+
+                        // particles[other].reverseVelocity();
+
+                    }
+                }
+            }
+        }
+
+        function updateParticles(particles) {
+            applyGravity(particles);
+            checkParticleCollisions(particles);
+            for(let i in particles) {
+                particles[i].move();
+            }
+        }
+
+        function renderParticles(particles) {
+            let maxXVel = particles.reduce(function(acc, el) {
+                if(Math.abs(el.velocity.x) > acc) {
+                    return Math.abs(el.velocity.x);
+                } else {
+                    return acc;
+                }
+            }, 0);
+
+            let maxYVel = particles.reduce(function(acc, el) {
+                if(Math.abs(el.velocity.y) > acc) {
+                    return Math.abs(el.velocity.y);
+                } else {
+                    return acc;
+                }
+            }, 0);
+
+            let totalMaxVel = maxXVel + maxYVel;
+
+
+            let averageX = particles.reduce(function(acc, el) {
+                return acc + el.position.x;
+            }, 0) / particles.length;
+
+            let averageY = particles.reduce(function(acc, el) {
+                return acc + el.position.y;
+            }, 0) / particles.length;
+
+            // console.log("totalMaxVel: " + totalMaxVel);
+
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            // ctx.fillStyle = "#000000";
+            for(let i in particles) {
+
+                let totalVel = (Math.abs(particles[i].velocity.x) + Math.abs(particles[i].velocity.y));
+                // console.log(totalVel);
+                let colorVal;
+                // if(totalVel < 1) {
+                //     colorVal = totalVel * 255;
+                // }
+
+                colorVal = Math.floor(totalVel / (totalMaxVel) * 255);
+                // console.log(colorVal * 255);
+                ctx.fillStyle = `rgb(${colorVal}, 0, 0)`;
+
+                // console.log(ctx.fillStyle);
+                let x = (particles[i].position.x);
+                let y =  particles[i].position.y;
+
+                ctx.moveTo(x, y);
+                ctx.beginPath();
+                // console.log(x + " " + y);
+                ctx.arc(x, y, PARTICLE_RADIUS, 0, Math.PI*2);
+                ctx.fill();
+            }
+
+            // Center of mass -->
+            ctx.fillStyle = "blue";
+            ctx.moveTo(averageX, averageY);
+            // console.log(averageX + " " + averageY);
+            ctx.beginPath();
+            ctx.arc(averageX, averageY, PARTICLE_RADIUS * 2, 0, Math.PI * 2);
+            ctx.fill();
+
+        }
+
+        var canvas = document.getElementById('target');
+        function mainLoop() {
+            renderParticles(particles);
+            updateParticles(particles);
+            requestAnimationFrame(mainLoop);
+        }
+        // console.log(particles);
+        requestAnimationFrame(mainLoop);
+</script>
+    </body>
+</html>
