@@ -2,11 +2,16 @@
 
 This is the showcase of Tuomas Myllymäki. Main language is Python. If you're an employer please contact me if you find my stuff interesting, I'm looking for a summer job for the summer of 2019. I live in Espoo, Finland.
 
-#Sim
+# Sim
 In the folder titled 'Sim' you find a gravity simulation made with HTML and Javascript.
 
-#Project_Omega
+# Project_Omega
 In this folder there's a gravity simulation made with Python and Tkinter
+# Machine Learning/Ai
+This folder contains different machine learning and AI algorithms. The file "graphics.py" is not made by me but other files in this
+folder use it to draw simple graphics for visualization.
+
+#
 
 # Contact
 email: myllymakituomas1998@gmail.com
