@@ -210,7 +210,7 @@ def main():
     win = g.GraphWin("BFS", WIN_WIDTH, WIN_HEIGHT, autoflush=True)
     draw_main(win, locations)
     START_CITY = str(input("Enter a start node: "))
-    GOAL_CITY = str(input("Enter a goal node: ")) 
+    GOAL_CITY = str(input("Enter a goal node: "))
 
     solution = BFS(locations[START_CITY], generate_node, goal_test, locations)
     if solution == -1:

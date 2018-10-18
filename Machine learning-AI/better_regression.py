@@ -131,7 +131,6 @@ def train():
                 inputs_and_weights = ([(x, weights[0]), (y, weights[1])])
                 result = activation_function(inputs_and_weights, bias)
 
-
                 if result != correct_value:
                     # Deltas for weights and bias.
                     deltaWeightX = correct_value * x
@@ -145,7 +144,6 @@ def train():
                     counter = counter + 1
                     wrong_counter = wrong_counter + 1
                     success = False
-
 
             training_line_data = generate_training_line(weights, bias, 1)
             t.set_ydata(training_line_data[0])
