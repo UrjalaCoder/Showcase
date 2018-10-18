@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Todo list</title>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    </head>
+    <body>
+        <h1>Todo list</h1>
+        <form id="userForm" action="#">
+            <input type="text" id="usernameInput">
+            </input>
+
+            <input type="submit" value="Submit" id="submitInput"></input>
+
+        </form>
+        <form id="addForm" action="#">
+            <input type="text" id="listInput"></input>
+            <input type="submit" value="Add" id="listAddButton"
+        </form>
+        <h4 id="errorOutput">Empty username!</h4>
+
+        <div id="todoListDiv">
+            <ul id="todoList">
+
+            </ul>
+        </div>
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <!-- /javascript/script.js -->
+        <script src="/javascript/script.js"></script>
+    </body>
+</html>
