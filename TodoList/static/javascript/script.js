@@ -37,7 +37,6 @@ function handleRemove(e) {
     }
 
     removeInProgress = true;
-    console.log(e.target);
     // TODO:
     // Use index to remove element from server side -->
     // e.parentNode
@@ -50,7 +49,6 @@ function handleRemove(e) {
         }
         // console.log(siblingIndices[i] === e.target);
     }
-    console.log(index);
 
     if(index < 0) return;
 
@@ -62,7 +60,6 @@ function handleRemove(e) {
         }
 
         removeInProgress = false;
-        console.log(response['new_list']);
         loggedInUser.list = response['new_list'];
 
         renderList(response['new_list']);
