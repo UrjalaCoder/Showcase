@@ -17,7 +17,7 @@ User.prototype.remove = function(index) {
     this.list.splice(index, 1);
 }
 
-var users = {'Tuomas': new User("Tuomas", ['a', 'b', 'b', 'b', 'a', 'c'])};
+var users = {};
 
 function loadFile(filePath, callback) {
     let readStream = fs.createReadStream(path.join(__dirname, filePath));
