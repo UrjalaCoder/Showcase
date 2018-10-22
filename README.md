@@ -20,6 +20,9 @@ This folder contains Python implementations of some famous algorithms. The sub-f
 # Python_simple
 This folder contains simple python scripts. They usually contain a class with a specific purpose.
 
+# TodoList
+Project made with NodeJS and jQuery. A simple todo-list implementation that remembers users. Doesn't use ANY NPM-packages.
+
 # Contact
 email: myllymakituomas1998@gmail.com
 Please include header [JOB] in the title for employment offers or questions about me.
