@@ -17,6 +17,9 @@ folder use it to draw simple graphics for visualization. The files in this folde
 # Algorithms
 This folder contains Python implementations of some famous algorithms. The sub-folders Matrix_Multiplication and Sorting contain algorithms related to their respective subjects.
 
+# Python_simple
+This folder contains simple python scripts. They usually contain a class with a specific purpose.
+
 # Contact
 email: myllymakituomas1998@gmail.com
 Please include header [JOB] in the title for employment offers or questions about me.
