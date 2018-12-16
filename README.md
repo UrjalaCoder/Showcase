@@ -1,6 +1,6 @@
 # Showcase
 
-This is the showcase of Tuomas Myllymäki. Main language is Python. If you're an employer please contact me if you find my stuff interesting, I'm looking for a summer job for the summer of 2019. I live in Espoo, Finland.
+This is the main showcase of Tuomas Myllymäki. I also have another web oriented showcase, please check it out also. Main language is Python. If you're an employer please contact me if you find my stuff interesting, I'm looking for a summer job for the summer of 2019. I live in Espoo, Finland.
 
 I'm a first-year computer science student at Aalto university. I have some hobby experience but no actual job experience. Though I'm eager to learn!
 
