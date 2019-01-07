@@ -1,8 +1,8 @@
 # Showcase
 
-This is the main showcase of Tuomas Myllymäki. I also have another web oriented showcase, please check it out also. Main language is Python. If you're an employer please contact me if you find my stuff interesting, I'm looking for a summer job for the summer of 2019. I live in Espoo, Finland.
-
-I'm a first-year computer science student at Aalto university. I have some hobby experience but no actual job experience. Though I'm eager to learn!
+This is an old repository of mine which contains all kinds of programs. My name is Tuomas Myllymäki and I live in southern Finland.
+If you're an employer please also check out my newer [repositories](https://github.com/UrjalaCoder/). As I said, **this is mainly old stuff**. I'm a first-year computer science student at Aalto university. I have some hobby experience but no actual job experience. Though I'm eager to learn!
+**I'm looking for a summer job for the summer of 2019. Please contact me if you're interested in hiring me.**
 
 # Sim
 In the folder titled 'Sim' you find a gravity simulation made with HTML and Javascript.
